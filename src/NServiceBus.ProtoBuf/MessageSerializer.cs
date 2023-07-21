@@ -1,4 +1,4 @@
-﻿using NServiceBus.Serialization;
+using NServiceBus.Serialization;
 using ProtoBuf.Meta;
 
 class MessageSerializer :
@@ -34,14 +34,13 @@ class MessageSerializer :
         {
             throw new("Interface based message are not supported. Create a class that implements the desired interface.");
         }
-
         runtimeTypeModel.Serialize(stream, message);
     }
 
-    public object[] Deserialize(Stream stream, IList<Type> messageTypes)
+    public object[] Deserialize(ReadOnlyMemory<byte> body, IList<Type> messageTypes)
     {
         var messageType = messageTypes.First();
-        var message = runtimeTypeModel.Deserialize(stream, null, messageType);
+        var message = runtimeTypeModel.Deserialize(body, type: messageType);
         return new[] { message };
     }
 

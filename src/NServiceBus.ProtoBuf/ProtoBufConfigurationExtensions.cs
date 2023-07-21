@@ -1,4 +1,4 @@
-﻿using NServiceBus.Configuration.AdvancedExtensibility;
+using NServiceBus.Configuration.AdvancedExtensibility;
 using NServiceBus.Serialization;
 using NServiceBus.Settings;
 using ProtoBuf.Meta;
@@ -21,7 +21,7 @@ public static class ProtoBufConfigurationExtensions
         settings.Set(runtimeTypeModel);
     }
 
-    internal static RuntimeTypeModel GetRuntimeTypeModel(this ReadOnlySettings settings) =>
+    internal static RuntimeTypeModel GetRuntimeTypeModel(this IReadOnlySettings settings) =>
         settings.GetOrDefault<RuntimeTypeModel>();
 
     /// <summary>
@@ -39,6 +39,6 @@ public static class ProtoBufConfigurationExtensions
         settings.Set("NServiceBus.ProtoBuf.ContentTypeKey", contentTypeKey);
     }
 
-    internal static string GetContentTypeKey(this ReadOnlySettings settings) =>
+    internal static string GetContentTypeKey(this IReadOnlySettings settings) =>
         settings.GetOrDefault<string>("NServiceBus.ProtoBuf.ContentTypeKey");
 }
