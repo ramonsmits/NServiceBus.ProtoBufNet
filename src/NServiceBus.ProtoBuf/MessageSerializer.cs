@@ -4,27 +4,12 @@ using ProtoBuf.Meta;
 class MessageSerializer :
     IMessageSerializer
 {
-    RuntimeTypeModel runtimeTypeModel;
+    readonly TypeModel TypeModel;
 
-    public MessageSerializer(string? contentType, RuntimeTypeModel? runtimeTypeModel)
+    public MessageSerializer(string contentType, TypeModel? typeModel)
     {
-        if (runtimeTypeModel == null)
-        {
-            this.runtimeTypeModel = RuntimeTypeModel.Default;
-        }
-        else
-        {
-            this.runtimeTypeModel = runtimeTypeModel;
-        }
-
-        if (contentType == null)
-        {
-            ContentType = "protobuf";
-        }
-        else
-        {
-            ContentType = contentType;
-        }
+        TypeModel = typeModel ?? RuntimeTypeModel.Default;
+        ContentType = contentType;
     }
 
     public void Serialize(object message, Stream stream)
@@ -34,13 +19,13 @@ class MessageSerializer :
         {
             throw new("Interface based message are not supported. Create a class that implements the desired interface.");
         }
-        runtimeTypeModel.Serialize(stream, message);
+        TypeModel.Serialize(stream, message);
     }
 
     public object[] Deserialize(ReadOnlyMemory<byte> body, IList<Type> messageTypes)
     {
         var messageType = messageTypes.First();
-        var message = runtimeTypeModel.Deserialize(body, type: messageType);
+        var message = TypeModel.Deserialize(body, type: messageType);
         return new[] { message };
     }
 

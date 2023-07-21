@@ -10,14 +10,16 @@ namespace NServiceBus.ProtoBuf;
 public class ProtoBufSerializer :
     SerializationDefinition
 {
+    public static string ContentEncoding { get; } = "protobuf";
+
     /// <summary>
     /// <see cref="SerializationDefinition.Configure"/>
     /// </summary>
     public override Func<IMessageMapper, IMessageSerializer> Configure(IReadOnlySettings settings) =>
         _ =>
         {
-            var runtimeTypeModel = settings.GetRuntimeTypeModel();
-            var contentTypeKey = settings.GetContentTypeKey();
+            var runtimeTypeModel = settings.GetTypeModel();
+            var contentTypeKey = settings.GetContentTypeKey() ?? ContentEncoding;
             return new MessageSerializer(contentTypeKey, runtimeTypeModel);
         };
 }
