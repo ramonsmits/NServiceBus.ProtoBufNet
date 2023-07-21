@@ -15,20 +15,31 @@ public static class ProtoBufConfigurationExtensions
     /// </summary>
     /// <param name="config">The <see cref="SerializationExtensions{T}"/> instance.</param>
     /// <param name="runtimeTypeModel">The <see cref="RuntimeTypeModel"/> to use.</param>
+    [Obsolete("Please use TypeModel property")]
     public static void RuntimeTypeModel(this SerializationExtensions<ProtoBufSerializer> config, RuntimeTypeModel runtimeTypeModel)
     {
         var settings = config.GetSettings();
-        settings.Set(runtimeTypeModel);
+        settings.Set((TypeModel)runtimeTypeModel);
+    }
+    /// <summary>
+    /// Configures the <see cref="TypeModel"/> to use.
+    /// </summary>
+    /// <param name="config">The <see cref="SerializationExtensions{T}"/> instance.</param>
+    /// <param name="typeModel">The <see cref="RuntimeTypeModel"/> to use.</param>
+    public static void TypeModel(this SerializationExtensions<ProtoBufSerializer> config, TypeModel typeModel)
+    {
+        var settings = config.GetSettings();
+        settings.Set(typeModel);
     }
 
-    internal static RuntimeTypeModel GetRuntimeTypeModel(this IReadOnlySettings settings) =>
-        settings.GetOrDefault<RuntimeTypeModel>();
+    internal static TypeModel GetTypeModel(this IReadOnlySettings settings) =>
+        settings.GetOrDefault<TypeModel>();
 
     /// <summary>
     /// Configures string to use for <see cref="Headers.ContentType"/> headers.
     /// </summary>
     /// <remarks>
-    /// Defaults to "wire".
+    /// Defaults to "protobuf".
     /// </remarks>
     /// <param name="config">The <see cref="SerializationExtensions{T}"/> instance.</param>
     /// <param name="contentTypeKey">The content type key to use.</param>

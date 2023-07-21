@@ -1,11 +1,17 @@
 using NServiceBus.ProtoBuf;
+using ProtoBuf.Meta;
 
 class Program
 {
     static async Task Main()
     {
+        var model = RuntimeTypeModel.Create();
+        model.Add<MyMessage>();
+
         var configuration = new EndpointConfiguration("ProtoBufSerializerSample");
-        configuration.UseSerialization<ProtoBufSerializer>();
+        var serializer = configuration.UseSerialization<ProtoBufSerializer>();
+        serializer.TypeModel(model.Compile());
+        serializer.ContentTypeKey("application/x-protobuf; protobuf-net");
         configuration.UseTransport<LearningTransport>();
         configuration.UsePersistence<LearningPersistence>();
 
