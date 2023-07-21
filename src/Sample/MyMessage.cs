@@ -1,4 +1,3 @@
-﻿using NServiceBus;
 using ProtoBuf;
 
 [ProtoContract]

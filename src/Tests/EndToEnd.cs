@@ -1,4 +1,3 @@
-﻿using NServiceBus;
 using NServiceBus.ProtoBuf;
 using ProtoBuf;
 
@@ -7,7 +6,7 @@ public class EndToEnd
     static ManualResetEvent manualResetEvent = new(false);
     string endpointName = "EndToEnd";
 
-    [Fact]
+    [Fact(Timeout = 500)]
     public async Task Write()
     {
         var configuration = new EndpointConfiguration(endpointName);
